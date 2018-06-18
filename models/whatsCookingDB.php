@@ -73,6 +73,38 @@ class WhatsCooking {
         return $user;
     }
 
+    public static function whatsCookingFilter() {
+        $db = Database::getDb();
+        $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+        $sql = "SELECT r.id AS recipe_id, p.address1, p.city, p.country, p.province, p.postal, r.title, ri.img_src, p.id
+                FROM recipes r JOIN recipes_made rm
+                ON r.id = rm.recipe_id
+                JOIN recipe_imgs ri
+                ON ri.recipe_id = r.id
+                JOIN profiles p
+                ON p.id = rm.user_id
+                GROUP BY p.address1";
+        $statement = $db->prepare($sql);
+        $statement->execute();
+        $rows = $statement->fetchAll();
+
+        foreach($rows as $row) {
+            $wc = new WhatsCookingDB(
+                $row['id']);
+                $wc->setRecipeId($row['recipe_id']);
+                $wc->setAdd($row['address1']);
+                $wc->setCity($row['city']);
+                $wc->setCountry($row['country']);
+                $wc->setProv($row['province']);
+                $wc->setPost($row['postal']);
+                $wc->setTitle($row['title']);
+                $wc->setImg($row['img_src']);
+                $user[] = $wc;
+        }
+        return $user;
+    }
+
     public static function userAddress($user_id) {
         $db = Database::getDb();
         $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);

@@ -5,58 +5,84 @@ require_once 'partial/_header.php';
 require_once '../models/db.php'; //Database Class file
 require_once '../models/profile.php'; //Profile Logic file
 require_once '../models/validation.php'; //Validation Library File
-
+$v = new Validation();
 if(isset($_POST['createProfile']))
 {
 	$textRegex = '/^[a-z]+$/i';
 	$passRegex = '/^\w+$/i';
 	$addRegex = '/\w+(\s\w+){2,}/';
-	$cityRegex = '/(\w+\s?){1,}/';
+    $cityRegex = '/(\w+\s?){1,}/';
+    // FNAME
     $fname = $_POST['fname'];
-	$fnameTest = Validation::validateAlphaOnly($textRegex, $fname);
+    $fnameTest = $v->validateAlphaOnly($textRegex, $fname);
+    // LNAME
     $lname = $_POST['lname'];
-	$lnameTest = Validation::validateAlphaOnly($textRegex, $lname);
+    $lnameTest = $v->validateAlphaOnly($textRegex, $lname);
+    // USERNAME
     $username = $_POST['userName'];
-	$usernameTest = Validation::validateAlphaOnly($textRegex, $username);
+    $usernameTest = $v->validateAlphaOnly($textRegex, $username);
+    // EMAIL
     $email = $_POST['email'];
-	$emailTest = Validation::email($email);
+    $emailTest = $v->email($email);
+    // PASSWORD 1
     $pass = $_POST['pass'];
-	$opassTTest = Validation::validateAlphaOnly($passRegex, $pass);
+    $opassTTest = $v->checkAssignProperty('pass');
+    // PASSWORD CONFIRM
     $cpass = $_POST['cPass'];
-	$cpassTTest = Validation::validateAlphaOnly($passRegex, $cpass);
-	$passTest = Validation::confirmPass($pass,$cpass);
+    $cpassTTest = $v->checkAssignProperty('cPass');
+    // CONFIRM PASSWORD
+    $passTest = $v->confirmPass($pass,$cpass);
+    // ADDRESS
     $addr1 = $_POST['add1'];
-	$addr1Test = Validation::validateAlphaOnly($addRegex, $addr1);
+    $addr1Test = $v->validateAlphaOnly($addRegex, $addr1);
+    // CITY
     $city = $_POST['city'];
-	$cityTest = Validation::validateAlphaOnly($cityRegex, $city);
+    $cityTest = $v->validateAlphaOnly($cityRegex, $city);
+    // COUNTRY
     $country = $_POST['country'];
-	$countryTest = Validation::validateDD($country);
+    $countryTest = $v->validateDD($country);
+    // PROVINCE
     $prov = $_POST['state'];
-	$provTest = Validation::validateDD($prov);
+    $provTest = $v->validateDD($prov);
+    // POSTAL CODE
     $postalc = $_POST['pcode'];
-	$postalcTest = Validation::postalCode($postalc);
+	$postalcTest = $v->postalCode($postalc);
     $admin = 0;
     
     $db = Database::getDb();
     $p = new Profile();
-	if($fnameTest != 0  && $lnameTest != 0 && $usernameTest != 0 && $postalcTest != 0 && $emailTest != 0 && $cpassTTest != 0 && $cityTest != 0 && $countryTest != 0 && $provTest != 0 && $addr1Test != 0 && $passTest != 0)
-	{
-		$hashedPass = password_hash($pass, PASSWORD_BCRYPT);
-		$count = $p->createProfile($db, $fname, $lname, $username, $email, $hashedPass, $addr1, $city, $country, $prov, $postalc, $admin);
-		if($count)
-		{
-			header('Location: login.php');
-		}
-		else
-		{
-			echo "Account was not created";
-		}
-	}
-	else
-	{
+
+    echo "<pre>";
+    var_dump($opassTTest);
+    var_dump($cpassTTest);
+    var_dump($passTest);
+    var_dump($fnameTest);
+    var_dump($lnameTest);
+    var_dump($usernameTest);
+    var_dump($postalcTest);
+    var_dump($emailTest);
+    var_dump($cityTest);
+    var_dump($countryTest);
+    var_dump($provTest);
+    var_dump($addr1Test);
+    var_dump($passTest);
+    echo "</pre>";
+
+	if($fnameTest != 0  && $lnameTest != 0 && $usernameTest != 0 && $postalcTest != 0 && $emailTest != 0 && $cpassTTest != null && $cityTest != 0 && $countryTest != 0 && $provTest != 0 && $addr1Test != 0 && $passTest != 0) {
+            $hashedPass = password_hash($pass, PASSWORD_BCRYPT);
+            $count = $p->createProfile($db, $fname, $lname, $username, $email, $hashedPass, $addr1, $city, $country, $prov, $postalc, $admin);
+            if($count)
+            {
+                header('Location: login.php');
+            }
+            else
+            {
+                echo "Account was not created";
+            }
+        }
+	else {
 		echo "Error";
 	}
-    
 }
 ?>
 <link rel="stylesheet" type="text/css" href="../assets/css/whatsCooking.css"/>

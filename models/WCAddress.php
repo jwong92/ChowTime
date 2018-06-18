@@ -2,6 +2,7 @@
 session_start();
 
 if(isset($_SESSION['user_id'])) {
+    // HAVE TO CHECK IF THE USER HAS MADE A RECIPE
     $id = $_SESSION['user_id'];
 } else {
     $id = 2;
@@ -13,7 +14,8 @@ include 'whatsCookingDB.php';
 
 
 //OBJECT OF USERS ADDRESS, IMG-SRC, RECIPE TITLE, ETC...
-$users = WhatsCooking::whatsCookingAll();
+// $users = WhatsCooking::whatsCookingAll();
+$users = WhatsCooking::whatsCookingFilter();
 
 $count = 0;
 

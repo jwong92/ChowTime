@@ -202,34 +202,34 @@ if(isset($_POST['update'])) {
     }
 
     //RETURN ALL STEPS TO ADD TO DATABASE
-function getAllSteps() {
-    $steps = "";
-    $count = 0;
-    $count2 = 0;
-    foreach($_POST['item'] as $key => $value) {
-        //COUNT TOTAL NUMBER OF STEPS
-        $count++;
-    }
-    foreach($_POST['item'] as $key => $value) {
-        $count2++;
-        //IF THE VALUE ISN'T NULL, THEN CONTINUE
-        if($value["step"] != "") {
-            //IF WE'RE AT THE LAST STEP, DON'T ADD ; WHICH IS THE SEPARATOR
-            if($count == $count2) {
-                //TRIM THE VALUE BEING INPUT SO THERE ARE NO WHITESPACES
-                $val = trim($value['step']);
-                $steps .= $val;
-            }
-            //OTHERWISE, ADD THE SEPARATOR
-            else {
-                $val = trim($value['step']);
-                $steps .= ($val . ';');
+    function getAllSteps() {
+        $steps = "";
+        $count = 0;
+        $count2 = 0;
+        foreach($_POST['item'] as $key => $value) {
+            //COUNT TOTAL NUMBER OF STEPS
+            $count++;
+        }
+        foreach($_POST['item'] as $key => $value) {
+            $count2++;
+            //IF THE VALUE ISN'T NULL, THEN CONTINUE
+            if($value["step"] != "") {
+                //IF WE'RE AT THE LAST STEP, DON'T ADD ; WHICH IS THE SEPARATOR
+                if($count == $count2) {
+                    //TRIM THE VALUE BEING INPUT SO THERE ARE NO WHITESPACES
+                    $val = trim($value['step']);
+                    $steps .= $val;
+                }
+                //OTHERWISE, ADD THE SEPARATOR
+                else {
+                    $val = trim($value['step']);
+                    $steps .= ($val . ';');
+                }
             }
         }
+        //RETURN ALL THE STEPS IN ONE LONG STRING TO BE LATER ENETERED INTO THE DATABASE
+        return $steps;
     }
-    //RETURN ALL THE STEPS IN ONE LONG STRING TO BE LATER ENETERED INTO THE DATABASE
-    return $steps;
-}
 
     //FILE VALIDATION
     function checkFiles($errors, $recipe) {
@@ -344,8 +344,6 @@ function getAllSteps() {
         return $ingredients;
     }
 
-
-
     /************************UPDATE****************************/
     //IF ALL INFORMATION IS VALID
     if(checkInputFields($intitle, $indesc, $inprepTime, $incookTime, $spiceLvl, $iningredDiff, $inoverallDiff, $indishDiff, checkForEmptySteps(), $indate, $intime, $errors)) {
@@ -426,11 +424,6 @@ function getAllSteps() {
             $img_in . "image was added";
         }
     }
-
     header("Location: recipes.php?&id=$recipe_id");
 } //END UPDATE
-
-
-
-
- ?>
+?>

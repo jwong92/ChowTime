@@ -1,7 +1,4 @@
-<?php
-?>
-
-    <!-- MAIN NAVIGATION -->
+   <!-- MAIN NAVIGATION -->
         <nav class="navbar navbar-expand-lg navbar-light">
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -16,10 +13,6 @@
                     <a class="nav-item nav-link" href="/chowtime/pages/whatsCooking.php">What's Cooking</a>
                     <a class="nav-item nav-link invisible" href="/chowtime/pages/whatsCooking.php">What's Cooking</a>
                 </div>
-                <div class="nav-container">
-                    <a class="nav-item nav-link" href="/chowtime/pages/events.php">Events</a>
-                    <a class="nav-item nav-link invisible" href="/chowtime/pages/events.php">Events</a>
-                </div>
                 <?php if (isset($_SESSION['user_id'])) : ?>
                     <div class="nav-container">
                         <a class="nav-item nav-link" href="/chowtime/pages/yourProfile.php">Profile</a>
@@ -29,18 +22,21 @@
                         <a class="nav-item nav-link" href="/chowtime/pages/timers.php">My Timers</a>
                         <a class="nav-item nav-link invisible" href="/chowtime/pages/timers.php">My Timers</a>
                     </div>
+                    <div class="nav-container">
+                        <a class="nav-item nav-link disabled" href="">Events</a>
+                    </div>
                 <?php endif ?>
             </div>
         </div>
-        <?php if (!isset($_SESSION['user_id'])) { ?>
+        <?php if (!isset($_SESSION['user_id'])) : ?>
             <form class="form-inline my-2 my-lg-0" action="/chowtime/pages/login.php" method="post">
                 <button class="btn my-2 my-sm-0" type="submit">Login</button>
             </form>
-        <?php } else { ?>
+        <?php else : ?>
             <form class="form-inline my-2 my-lg-0" action="/chowtime/pages/login.php" method="post">
                 <button class="btn my-2 my-sm-0" type="submit">Logout</button>
             </form>
-        <?php } ?>
+        <?php endif ?>
     </nav>
 <div  class="container ddwrapper">
     <!-- LOGO && SIGNATURE -->
